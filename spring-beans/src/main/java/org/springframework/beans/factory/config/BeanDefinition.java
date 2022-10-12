@@ -38,6 +38,10 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.support.RootBeanDefinition
  * @see org.springframework.beans.factory.support.ChildBeanDefinition
  */
+
+/*
+Spring中用来描述各种Bean对象及其之间的相关关系
+*/
 public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**

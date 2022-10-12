@@ -922,6 +922,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	// Implementation of BeanDefinitionRegistry interface
 	//---------------------------------------------------------------------
 
+	/*
+	TODO 真正完成注册功能
+	*/
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
@@ -995,7 +998,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		else if (isConfigurationFrozen()) {
 			clearByTypeCache();
 		}
-	}
+	} //TODO Bean的配置被解析并注册到IoC容器，被容器管理起来，完成IoC容器初始化全部工作，整个容器中有全部的Bean配置信息，是IoC的基础
 
 	@Override
 	public void removeBeanDefinition(String beanName) throws NoSuchBeanDefinitionException {

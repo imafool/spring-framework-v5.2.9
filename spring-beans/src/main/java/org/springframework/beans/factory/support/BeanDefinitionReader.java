@@ -37,6 +37,12 @@ import org.springframework.lang.Nullable;
  * @since 1.1
  * @see org.springframework.core.io.Resource
  */
+
+/*
+
+用途：该接口定义Spring对配置文件的解析。Spring对Bean的解析过程复杂，不仅保证可扩展，并且要足够灵活来应对可能的变化！
+
+*/
 public interface BeanDefinitionReader {
 
 	/**

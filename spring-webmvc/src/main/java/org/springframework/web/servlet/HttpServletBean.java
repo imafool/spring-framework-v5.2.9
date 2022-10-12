@@ -79,6 +79,14 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  * @see #doGet
  * @see #doPost
  */
+
+/*
+
+Spring中的Servlet：
+HttpServletBean 是对 javax.servlet.http.HttpServlet 的简单扩展，重写了 Servlet 的init方法（157行），
+其子类包括FrameworkServlet（重写了 Servlet 的service，destroy方法），子类DispatcherServlet初始化的时候，都会执行这里的init，
+
+*/
 @SuppressWarnings("serial")
 public abstract class HttpServletBean extends HttpServlet implements EnvironmentCapable, EnvironmentAware {
 
@@ -167,6 +175,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 		}
 
 		// Let subclasses do whatever initialization they like.
+		/* 留给子类去扩展初始化逻辑，在 FrameworkServlet 中实现，说白了，Servlet生命周期的方法实现都在 FrameworkServlet 里面，进而去初始化 IoC 容器 */
 		initServletBean();
 	}
 

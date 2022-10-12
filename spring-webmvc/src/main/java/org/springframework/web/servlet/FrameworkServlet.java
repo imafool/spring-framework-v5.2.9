@@ -518,6 +518,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * Overridden method of {@link HttpServletBean}, invoked after any bean properties
 	 * have been set. Creates this servlet's WebApplicationContext.
 	 */
+	/* 创建SpringIoC容器，Web环境的IoC容器 */
 	@Override
 	protected final void initServletBean() throws ServletException {
 		getServletContext().log("Initializing Spring " + getClass().getSimpleName() + " '" + getServletName() + "'");
@@ -527,6 +528,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 
 		try {
+			/* 初始化一个 WebApplicationContext */
 			this.webApplicationContext = initWebApplicationContext();
 			initFrameworkServlet();
 		}
@@ -557,11 +559,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @see #setContextClass
 	 * @see #setContextConfigLocation
 	 */
+	/* 初始化和发布一个 WebApplicationContext */
 	protected WebApplicationContext initWebApplicationContext() {
 		WebApplicationContext rootContext =
 				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
 
+		/* TODO 建立父子容器之间的关联关系 */
 		if (this.webApplicationContext != null) {
 			// A context instance was injected at construction time -> use it
 			wac = this.webApplicationContext;
@@ -584,10 +588,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// has been registered in the servlet context. If one exists, it is assumed
 			// that the parent context (if any) has already been set and that the
 			// user has performed any initialization such as setting the context id
+
+			/* 查找Servlet上下文中是否有WebIoC容器的引用 */
 			wac = findWebApplicationContext();
 		}
 		if (wac == null) {
 			// No context instance is defined for this servlet -> create a local one
+
+			/* TODO 内部会进入启动IoC容器 */
 			wac = createWebApplicationContext(rootContext);
 		}
 
@@ -596,6 +604,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
 			synchronized (this.onRefreshMonitor) {
+				/* 触发onRefresh，由DispatcherServlet实现 */
 				onRefresh(wac);
 			}
 		}
@@ -665,6 +674,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		if (configLocation != null) {
 			wac.setConfigLocation(configLocation);
 		}
+		/* TODO */
 		configureAndRefreshWebApplicationContext(wac);
 
 		return wac;
@@ -699,6 +709,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		postProcessWebApplicationContext(wac);
 		applyInitializers(wac);
+
+		/* TODO 容器核心方法 refresh，启动 IoC容器入口 */
 		wac.refresh();
 	}
 

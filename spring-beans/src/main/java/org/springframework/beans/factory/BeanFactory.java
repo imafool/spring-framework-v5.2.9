@@ -23,11 +23,6 @@ import org.springframework.lang.Nullable;
 /**
  * The root interface for accessing a Spring bean container.
  *
- * <p>This is the basic client view of a bean container;
- * further interfaces such as {@link ListableBeanFactory} and
- * {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}
- * are available for specific purposes.
- *
  * <p>This interface is implemented by objects that hold a number of bean definitions,
  * each uniquely identified by a String name. Depending on the bean definition,
  * the factory will return either an independent instance of a contained object
@@ -113,7 +108,33 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization
  * @see DisposableBean#destroy
  * @see org.springframework.beans.factory.support.RootBeanDefinition#getDestroyMethodName
+ *
+ *
+ *
+ *
  */
+
+/* 2022年10月13日 01:38:58 huwenfei4j@outlook.com
+
+1. 用途：
+    （1）BeanFactory是Spring Bean容器的根接口或者基本视图！
+    （2）该接口只对IoC容器基本行为做了定义，不关心Bean是如何定义或者如何加载，正如工厂模式目的，只关心最终对象，不关心实现细节！
+    （3）工厂具体如何生产对象，由具体的IoC实现类去实现，比如GenericApplicationContext，ClasspathXmlApplicationContext等目的一目了然
+    （4）其中ApplicationContext除了提供IoC基本功能，还提供了附加服务：
+    	.信息源 <MessageSource>
+    	.国际化 <>
+    	.访问资源 <ResourcePatternResolver>
+    	.支持事件 <ApplicationEventPublisher>
+
+2. BeanFactory多个子接口的目的：
+	ListableBeanFactory 和 org.springframework.beans.factory.config.ConfigurableBeanFactory 两个接口可用于特定的用途！
+	还有比如 HierarchicalBeanFactory，AutowireCapableBeanFactory 等子接口，主要是依据单一职责，对接口职责进行划分，各个子接口规范不同的行为：
+   （1）ListableBeanFactory 可以列表化的Bean
+   （2）HierarchicalBeanFactory 继承关系的Bean
+   （3）AutowireCapableBeanFactory 定义Bean的自动装配规则
+
+3.
+*/
 public interface BeanFactory {
 
 	/**
@@ -122,6 +143,7 @@ public interface BeanFactory {
 	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
 	 * will return the factory, not the instance returned by the factory.
 	 */
+	/* 对 FactoryBean 的转义定义，获取 FactoryBean 的时候，可以得到工厂生成的对象 */
 	String FACTORY_BEAN_PREFIX = "&";
 
 
@@ -154,6 +176,7 @@ public interface BeanFactory {
 	 * @throws BeanNotOfRequiredTypeException if the bean is not of the required type
 	 * @throws BeansException if the bean could not be created
 	 */
+	/* 对于上边的方法，增加了类型安全验证机制 */
 	<T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
 	/**

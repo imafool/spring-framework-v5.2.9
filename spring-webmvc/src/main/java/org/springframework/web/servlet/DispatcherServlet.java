@@ -490,6 +490,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * This implementation calls {@link #initStrategies}.
 	 */
+	/* 初始化 Spring Web MVC 九大组件 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
 		initStrategies(context);
@@ -500,14 +501,23 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		/* 多文件上传 组件 */
 		initMultipartResolver(context);
+		/* 本地化 */
 		initLocaleResolver(context);
+		/* 主题 */
 		initThemeResolver(context);
+		/* 处理器映射 */
 		initHandlerMappings(context);
+		/* 处理器适配器 */
 		initHandlerAdapters(context);
+		/* 异常处理 */
 		initHandlerExceptionResolvers(context);
+		/* 视图预处理 */
 		initRequestToViewNameTranslator(context);
+		/* 视图转换器 */
 		initViewResolvers(context);
+		/*  */
 		initFlashMapManager(context);
 	}
 

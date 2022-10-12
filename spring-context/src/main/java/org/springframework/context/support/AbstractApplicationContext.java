@@ -455,6 +455,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getResources
 	 * @see org.springframework.core.io.support.PathMatchingResourcePatternResolver
 	 */
+	/* 返回一个资源加载器来读取Bean配置信息 */
 	protected ResourcePatternResolver getResourcePatternResolver() {
 		return new PathMatchingResourcePatternResolver(this);
 	}
@@ -513,44 +514,86 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
+	/*
+	TODO 核心方法：IoC容器对Bean定义的载入过程
+	TODO 主要作用：
+	创建IoC容器之前，如果有容器存在，需要把容器销毁和关闭，
+	保证refresh之后使用的新的IoC容器，在新建立的容器中进行初始化，对Bean的配置进行载入
+	*/
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+
+			/*
+			准备刷新，设置同步标识 */
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+
+			/*
+			TODO 告诉子类开始载入资源文件 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+
+			/*
+			为BeanFactory配置容器特性，比如类加载器，事件处理器等等 */
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+
+				/*
+				为容器某些子类指定特殊的BeanPost事件处理器 */
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+
+				/*
+				调用所有注册了BeanFactoryPostProcessor的Bean */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+
+				/*
+				为BeanFactory注册BeanPost事件处理器，用来监听容器触发的事件 */
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+
+				/*
+				初始化信息源/国际化 */
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+
+				/*
+				初始化容器事件传播器 */
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+
+				/*
+				调用子类的某些特殊Bean的初始化方法 */
 				onRefresh();
 
 				// Check for listener beans and register them.
+
+				/*
+				为事件传播器注册事件监听器 */
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+
+				/*
+				初始化所有剩余的单例（不包括延迟加载的） */
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+
+				/*
+				初始化容器的生命周期事件处理器，发布容器的生命周期事件 */
 				finishRefresh();
 			}
 
@@ -561,9 +604,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 
 				// Destroy already created singletons to avoid dangling resources.
+
+				/*
+				销毁已创建的Bean */
 				destroyBeans();
 
 				// Reset 'active' flag.
+
+				/*
+				取消refresh操作，重置容器同步标识 */
 				cancelRefresh(ex);
 
 				// Propagate exception to caller.
@@ -1391,6 +1440,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @throws IllegalStateException if already initialized and multiple refresh
 	 * attempts are not supported
 	 */
+
+	/* 委派子类完成 */
 	protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
 
 	/**

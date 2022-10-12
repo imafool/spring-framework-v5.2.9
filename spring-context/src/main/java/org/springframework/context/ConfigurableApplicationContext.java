@@ -176,6 +176,12 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @throws IllegalStateException if already initialized and multiple refresh
 	 * attempts are not supported
 	 */
+	/* 翻译：
+	 1. 加载/刷新配置（基于Java的配置，XML，Properties，关系数据模式，或者其他格式）
+	 2. 作为一个启动方法，执行了这个方法，要么全部实例化，要么根本不实例化（单例）
+	 3. 如果bean factory不能被实例化，抛异常 BeansException
+	 4. 如果已被实例化或者多次调用不被支持，抛异常 IllegalStateException
+	 */
 	void refresh() throws BeansException, IllegalStateException;
 
 	/**
